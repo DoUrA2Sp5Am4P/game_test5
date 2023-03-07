@@ -1,74 +1,26 @@
 <html>
 <head>
 </head>
-    <body>
-            <form>
-  <h1>Поставьте оценку приложению от 1 до 5, где 1 - очень плохо, 5 - великолепно!</h1>
-  <div>
-    <input type="radio" id="contactChoice1"
-           name="contact" value="1" checked>
-    <label for="contactChoice1">1</label><br>
-    <input type="radio" id="contactChoice2"
-           name="contact" value="2">
-    <label for="contactChoice2">2</label><br>
-    <input type="radio" id="contactChoice3"
-           name="contact" value="3">
-    <label for="contactChoice3">3</label><br>
-           <input type="radio" id="contactChoice3"
-           name="contact" value="4">
-    <label for="contactChoice3">4</label><br>
-           <input type="radio" id="contactChoice3"
-           name="contact" value="5">
-    <label for="contactChoice3">5</label><br>
-  </div>
-                   <h2>Ваш идентификатор и оценка будут сохранены для аналитики!</h2>
-  <div>
-    <button type="submit">Отправить</button>
-  </div>
-</form>
-<pre id="log">
-</pre>
-<script src="https://unpkg.com/@vkontakte/vk-bridge@2.7.0/dist/browser.min.js"></script>
-    <script type="module">
- "use strict"
- vkBridge.send("VRWebInit", {});
-const startParams = new URLSearchParams(window.location.search);
-const userId = startParams.get("user_id");
- import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
- import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js";
- const firebaseConfig = {
-  apiKey: "AIzaSyCVdEBD5Bryr94owyMHMwcvVNn5L7-BUyI",
-  authDomain: "project1-c466e.firebaseapp.com",
-  databaseURL: "https://project1-c466e-default-rtdb.firebaseio.com",
-  projectId: "project1-c466e",
-  storageBucket: "project1-c466e.appspot.com",
-  messagingSenderId: "226654211273",
-  appId: "1:226654211273:web:a2b501662bc5c25e581118"
-};
-                var form = document.querySelector("form");
-var log = document.querySelector("#log");
+<body>
+<!-- Yandex Games SDK -->
+<script src="https://yandex.ru/games/sdk/v2"></script>
+<script>
+    YaGames.init().then(ysdk => {
+        // ...
 
-form.addEventListener("submit", function(event) {
-  var data = new FormData(form);
-  var output = "";
-  for (const entry of data) {
-    output =entry[1] + "\r";
-  };
-    // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const database = getDatabase();
-let userId = localStorage.getItem('id');
-                                const db = getDatabase();
-                     set(ref(db,'feedback/'), {
-    [userId]: output,
-  });
-  event.preventDefault();
-  function sayHi() {
- window.location = 'startpagebe.html';
-}
-  setTimeout(sayHi, 500);
-}, false);
-            </script>
-
-    </body>
+ysdk.feedback.canReview()
+        .then(({ value, reason }) => {
+            if (value) {
+                ysdk.feedback.requestReview()
+                    .then(({ feedbackSent }) => {
+                        window.location = "notc.html";
+                    })
+            } else {
+                console.log(reason)
+				window.location = "notc.html";
+            }
+        })
+		    });
+		</script>
+</body>
 </html>
